@@ -1,4 +1,5 @@
 import React from 'react';
+import { Icon } from 'react-native-elements'
 import {
   SafeAreaView,
   StyleSheet,
@@ -9,6 +10,8 @@ import {
   StatusBar,
   FlatList,
   TouchableOpacity,
+  ActivityIndicator,
+  Dimensions
 } from 'react-native' ;
 
 export default class App extends React.Component{
@@ -39,15 +42,35 @@ export default class App extends React.Component{
       });
     }
 
-    render(){if(!this.state.isloading){if(this.state.data.toLowerCase().includes('plot'))
-        return(
-            <Text style = {{padding:10 ,fontSize:16}}>{this.state.data.replace(/<[^>]*>/g,'').replace(/&.*;/g,'').replace(/{.*}/g,'').replace(/^.*./g,'')}</Text>
-        )
-        else return(
-            <Text>Plot not found</Text>
+    render(){if(!this.state.isloading){if(this.state.data.toLowerCase().includes('plot')||this.state.data.toLowerCase().includes('synopsis'))
+        return(<>
+            <View style = {styles.plot}>
+            <Text style = {{textAlign:'center',fontSize:28}}>
+           {this.props.title}
+           </Text>
+            <Text style = {{fontSize:16}}>
+            {this.state.data.replace(/<[^>]*>/g,'').replace(/&.*;/g,'').replace(/{.*}/g,'').replace(/^.*./g,'')}
+            </Text>
+            </View>
+        </>)
+        else return(<>
+            <Text style = {{textAlign:"center",fontWeight:'bold',fontSize:30}}>Plot not found</Text>
+            <Icon name='error' />
+  </>
         )}
         else return(
-            <Text>Loading...</Text>
+            <ActivityIndicator size = 'large' color = '#f03269'/>
         )
     }
 }
+const styles= StyleSheet.create({
+    plot:{
+        padding:10,
+        flex:1,
+        borderColor:'#633d48',
+        borderRadius:10,
+        borderWidth:0.8,
+        margin:10,
+        backgroundColor:'white'
+    }
+})
