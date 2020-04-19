@@ -134,12 +134,23 @@ export default class Main extends React.Component {
      pressed: !this.state.pressed,
    })
  }
+
+ renderComponent(){
+   return(
+  <SearchBar
+  searchIcon = {<TouchableOpacity onPress ={() => this.setState({pressed:!this.state.pressed})} ><Icon name = 'ios-arrow-back' style = {{fontSize:40}}/></TouchableOpacity>} 
+onSubmitEditing= {()=>this.setState({pressed:!this.state.pressed},this.handleSearch())} 
+placeholder='Search for another Movie' 
+onChangeText = {(text) => this.setState({search:text}) } 
+value={this.state.search}
+containerStyle = {{backgroundColor: '#fff'}}
+inputContainerStyle = {{backgroundColor:'#fff'}}
+inputStyle = {{color:'#000000'}}
+lightTheme = {true}
+/>)
+ }
+
   render(){
-    var swipeoutBtns = [
-      {
-        text: 'Button'
-      }
-    ]
     
     if(!this.state.isloading){ if(!this.state.pressed)  
   {return (
@@ -155,18 +166,18 @@ export default class Main extends React.Component {
           inputStyle = {{color:'#000000'}}
           lightTheme = {true}
            /> 
-           <ImageBackground source = {require('./bg.jpg')} imageStyle={{opacity: 0.4}} style = {{flex:1,resizeMode:'cover',backgroundColor:'lightgrey'}}>
+           <ImageBackground source = {require('./bg.jpg')} imageStyle={{opacity: 0.4}} style = {{flex:1,resizeMode:'cover',backgroundColor:'white'}}>
            <View style = {{backgroundColor:'#fff',borderBottomLeftRadius:20,borderBottomRightRadius:20}}>
-           <Text style = {{color:'black',textAlign:'center',fontStyle:'italic',marginBottom:2}}>
+           <Text style = {{color:'black',textAlign:'center',fontStyle:'italic',marginBottom:2,opacity:0.4}}>
            Tip: Try giving the correct spelling
            </Text>
            </View>
           <FlatList data={this.state.titleData}
                     keyExtractor={item => item.title}
                     renderItem={({ item }) => {
-                                               if ((item.snippet.toLowerCase().includes('film') || item.snippet.toLowerCase().includes('series') ||  item.snippet.toLowerCase().includes('starring'))  && !item.title.toLowerCase().includes('(actress)') && !item.title.toLowerCase().includes('novel') && !item.title.toLowerCase().includes('(actor)') && !item.title.toLowerCase().includes('list of') && !item.snippet.toLowerCase().includes('character') && !item.title.toLowerCase().includes('soundtrack') && !item.title.toLowerCase().includes('music from the') && !item.title.toLowerCase().includes('disambiguation'))
+                                               if ((item.snippet.toLowerCase().includes('film') || item.snippet.toLowerCase().includes('television series') ||  item.snippet.toLowerCase().includes('starring'))  && !item.title.toLowerCase().includes('(actress)') && !item.title.toLowerCase().includes('novel') && !item.title.toLowerCase().includes('(actor)') && !item.title.toLowerCase().includes('list of') && !item.snippet.toLowerCase().includes('character') && !item.title.toLowerCase().includes('soundtrack') && !item.title.toLowerCase().includes('music from the') && !item.title.toLowerCase().includes('disambiguation'))
                                                    {return(<><TouchableOpacity onPress = {() => this.setState({pressed: !this.state.pressed,title:item.title,search:'',current:item})}
-                                                   onLongPress = {()=>this.longpress(item.title,item)}>
+                                                  >
                                                               
                                                                <ListItem title={<Text style = {styles.text}>{item.title}</Text> }
                                                                          containerStyle={styles.list}
@@ -192,26 +203,8 @@ export default class Main extends React.Component {
   } 
   else return(
             <View style = {styles.container}>
-                 <ScrollView style = {{flex:1}}scrollEnabled= {true}>
-                 <SearchBar 
-          onSubmitEditing= {()=>this.setState({pressed:!this.state.pressed},this.handleSearch())} 
-          placeholder='Search for another Movie' 
-          onChangeText = {(text) => this.setState({search:text}) } 
-          value={this.state.search}
-          containerStyle = {{backgroundColor: '#fff'}}
-          inputContainerStyle = {{backgroundColor:'#fff'}}
-          inputStyle = {{color:'#000000'}}
-          lightTheme = {true}
-           /> 
-           <View style = {{flex:0,flexDirection:'row'}}>
-           <TouchableOpacity onPress ={() => this.setState({pressed:!this.state.pressed})} >
-                   <Icon name = 'ios-arrow-round-back' style = {{paddingLeft:30,fontSize:40}}/>
-              </TouchableOpacity>
-              <View style = {{width:Dimensions.get('window').width/1.6}}/>
-              <TouchableOpacity onPress ={() => this.longpress(this.state.title,this.state.current)}>
-                   <Icon name = 'add' style = {{paddingLeft:60,fontSize:36}}/>
-              </TouchableOpacity>
-              </View>
+                 <ScrollView style = {{flex:1}}scrollEnabled= {true} stickyHeaderIndices = {[0]} > 
+                   {this.renderComponent()}
                    <Plot title = {this.state.title} pageid= {this.state.pageid}/>
                  </ScrollView>
              </View>
@@ -231,9 +224,9 @@ else return(
           lightTheme = {true}
            />
           <View style = {{flex:1,justifyContent:'center'}}>
-          <ImageBackground source = {require('./bg.jpg')} imageStyle={{opacity: 0.4}} style = {{flex:1,resizeMode:'cover',backgroundColor:'lightgrey'}}>
+          <ImageBackground source = {require('./bg.jpg')} imageStyle={{opacity: 0.4}} style = {{flex:1,resizeMode:'cover',backgroundColor:'white'}}>
           <ActivityIndicator size='large' color = '#f03269'/>
-          <Text style = {{textAlign:'center'}}>Searching for {this.state.search}</Text>
+          <Text style = {{textAlign:'center',color:'white'}}>Searching for {this.state.search}</Text>
           </ImageBackground>
           </View>
   </View>
@@ -253,7 +246,7 @@ const styles = StyleSheet.create({
     fontWeight:'bold',
     textAlign: 'left',
     color:'#fff',
-    opacity:1
+    opacity:1,
   },
   list:{
     borderBottomWidth: 0,
@@ -262,7 +255,7 @@ const styles = StyleSheet.create({
     borderWidth:0.8,
     opacity:1,
     marginHorizontal:10,
-    marginTop:10,
+    marginVertical:5,
     backgroundColor:'#f03269'
 
 

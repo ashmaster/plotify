@@ -16,6 +16,7 @@
     "react-native": "0.61.5",
     "react-native-elements": "^1.2.7",
     "react-native-snackbar": "^2.2.0",
+    "react-native-splash-screen": "^3.2.0",
     "react-native-swipeout": "^2.3.6",
     "react-native-vector-icons": "^6.6.0",
     "react-native-xml2js": "^1.0.3"
@@ -32,5 +33,6 @@
   },
   "jest": {
     "preset": "react-native"
-  }
+  },
+  "entryPoint": "./src/app/index.js"
 }
